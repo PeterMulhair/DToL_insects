@@ -7,12 +7,13 @@ Collection of scripts and data useful for analyses of insect genomes produced by
 
 ### Requirements
 `-e, --ena` flag requires a tsv file from ENA with all species genome information (see data folder for example).
-`-g, --group` flag requires name of insect groups you wish to download data eg. `Insecta` or `Hemiptera, Hymenoptera, Diptera` or `Lepidoptera`
+
+`-g, --group` flag requires name of insect groups you wish to download data eg. `Insecta` or `Hemiptera, Hymenoptera, Diptera` or `Lepidoptera` (NOTE if Insecta is used, there is no need to specify individual insect orders).
 
 ### Output
 The output is the genomes from the desired insect group in fasta format.
 
-If the `-i` flag is used, a summary tsv file called `genome_summary.tsv` is also produced which conatins info on insect Order, species name, shortened DToL species name, genome size and chromosome count (number of scaffolds assigned to chromosomes).
+If the `-i, --info` flag is used, a summary tsv file called `genome_summary.tsv` is also produced which conatins info on insect Order, species name, shortened DToL species name, genome size and chromosome count (number of scaffolds assigned to chromosomes).
 
 ### Full usage
 
