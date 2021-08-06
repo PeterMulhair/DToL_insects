@@ -131,5 +131,9 @@ if args.info:
                         outF.write(k + '\t' + sp_info[0] + '\t' + sp_info[1] + '\t' + str(sp_info[2]) + '\t' + str(sp_info[3]) + '\n')
 
 
-print('\n')
-print('Download complete. See genome_summary.tsv for useful information about genomes.')
+    print('\n')
+    print('Download complete. See genome_summary.tsv for useful information about genomes.')
+
+else:
+    print('Download complete.')
+                        
