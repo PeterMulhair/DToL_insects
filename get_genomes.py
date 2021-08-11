@@ -80,9 +80,14 @@ with open(args.ena) as f:
                             genome_dict[spID] = GCA
                             genome_info[order_name].append(sp_name)
 
-print('\n')
-print('Downloading', len(genome_dict), 'genome(s)')
-print('This may take some time...')
+#Make sure there are new genomes available
+if len(genome_dict) == 0:
+    print('No new genomes to download!')
+    sys.exit()
+else:
+    print('\n')
+    print('Downloading', len(genome_dict), 'genome(s)')
+    print('This may take some time...')
 
 #Function to download genomes using dictionary of species to assembly IDs as input                   
 def genome_download(species, genome):
