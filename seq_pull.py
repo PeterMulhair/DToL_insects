@@ -6,7 +6,7 @@ parse = argparse.ArgumentParser()
 
 parse.add_argument("-g", "--genome", type=str, help="genome fasta file to pull sequence from")
 parse.add_argument("-c", "--contig", type=str, help="name of contig of interest in genome")
-parse.add_argument("-r", "--ranges", action="append", nargs="+", help="range of sequnce to pull out")
+parse.add_argument("-r", "--ranges", action="append", nargs="+", help="range of sequences to pull out eg. 5,10 30,55")
 parse.add_argument("-o", "--out", type=str, help="name of output file")
 
 args = parse.parse_args()
