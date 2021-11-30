@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 
+import re
+import os.path
 import sys
 import glob
 import argparse
 from Bio import SeqIO
+import xml.etree.ElementTree as ET
 from collections import defaultdict
 from subprocess import call as unix
 from joblib import Parallel, delayed
 
 # Author: Peter Mulhair
 # Date: 15/01/2020
-# Usage: python3 get_genomes.py --ena <ena tsv file> --group <Name of insect orders>
+# Usage: python3 get_genomes.py --input <ncbi xml file> --group <Name of insect orders>
 
 '''
 Script to download available insect DToL
@@ -21,15 +24,19 @@ tsv file from ENA is required as input.
 
 parse = argparse.ArgumentParser()
 
-parse.add_argument("-e", "--ena",type=str, help="ena tsv file with genome info",required=True)
+parse.add_argument("-i", "--input",type=str, help="ncbi xml file with genome info",required=True)
 parse.add_argument("-g", "--group", nargs="+", help="list of insect orders to download - eg. Insect, Odonata, Ephemeroptera, Coleoptera, Hymenoptera, Lepidoptera...",required=True)
-parse.add_argument("-i", "--info", help="flag to output information on genome data - eg. genome size, chromosome count", action="store_true")
+parse.add_argument("-d", "--info", help="flag to output information on genome data - eg. genome size, chromosome count", action="store_true")
+parse.add_argument("-t", "--threads", help="number of threads to use i.e. number of genomes to download at once, default is 1", required=False)
 
 args = parse.parse_args()
 
 #Dictionary of insect orders and DToL abbreviations for them
-insect_order_dict = {'Archaeognatha': 'ia', 'Blattodea': 'ib', 'Coleoptera': 'ic', 'Dermaptera': 'ip', 'Diptera': 'id', 'Embioptera': 'ie', 'Ephemeroptera': 'ie', 'Hemiptera': 'ih', 'Hymenoptera': 'iy', 'Lepidoptera': 'il', 'Mantodea': 'im', 'Mecoptera': 'im', 'Megaloptera': 'im', 'Neuroptera': 'in', 'Odonata': 'io', 'Orthoptera': 'io', 'Phasmatodea': 'ip', 'Phthiraptera': 'ip', 'Plecoptera': 'ip', 'Poduromorpha': 'ip', 'Psocoptera': 'ip', 'Raphidioptera': 'ir', 'Siphonaptera': 'is', 'Strepsiptera': 'is', 'Thysanoptera': 'it', 'Trichoptera': 'it', 'Zygentoma': 'iz'}
+insect_order_dict = {'Archaeognatha': 'ia', 'Blattodea': 'ib', 'Coleoptera': 'ic', 'Dermaptera': 'ig', 'Diptera': 'id', 'Embioptera': 'ie', 'Ephemeroptera': 'ie', 'Hemiptera': 'ih', 'Hymenoptera': 'iy', 'Lepidoptera': 'il', 'Mantodea': 'im', 'Mecoptera': 'ij', 'Megaloptera': 'ik', 'Neuroptera': 'in', 'Odonata': 'io', 'Orthoptera': 'iq', 'Phasmatodea': 'ip', 'Phthiraptera': 'ip', 'Plecoptera': 'ip', 'Poduromorpha': 'ip', 'Psocoptera': 'ip', 'Raphidioptera': 'ir', 'Siphonaptera': 'is', 'Strepsiptera': 'is', 'Thysanoptera': 'it', 'Trichoptera': 'ii', 'Zygentoma': 'iz'}
 ##Collembola instead of Poduromorpha? 
+
+#Get number of threads
+threads = int(args.threads)
 
 #Check input options for errors
 for order_name in args.group:
@@ -48,39 +55,48 @@ for genomes in glob.glob('*fasta'):
     GCA = genomes.split('.')[0]
     GCA_list.append(GCA)
 
-#Parse ena file to create dictionary of species name to GCA assembly ID
+#Parse ncbi xml file to create dictionary of species name to GCA assembly ID
 genome_dict = {}
 genome_info = defaultdict(list)
-with open(args.ena) as f:
-    next(f)
-    for line in f:
-        lines = line.split('\t')
-        sp = lines[1].strip()
-        if 'alternate' not in sp:
-            GCA = lines[0].strip('"')
-            GCAid = GCA.split('.')[0]
-            if GCAid not in GCA_list:
-                spID = sp.split(' ')[0].strip('"')
-                sp_name = sp.split(' ')[-2:]
-                sp_name = ' '.join(sp_name)
-                sp_name = sp_name.strip('"')
-                if args.group[0] == 'Insecta':
-                    if spID[:1] == 'i':
-                        for k, v in insect_order_dict.items():
-                            if spID[:2] == v:
-                                order_name = k
+with open(args.input) as f:
+    xml = f.read()
+
+ncbi_file = ET.fromstring("<root>" + '\n' + xml + "</root>")
+for elem in ncbi_file:
+
+    for subelem in elem.findall('AssemblyName'):
+        spID = subelem.text
+        
+    for subelem in elem.findall('AssemblyAccession'):
+        GCA = subelem.text
+        GCAid = GCA.split('.')[0]
+        if 'GCF' in GCA:
+            GCA = 'GCA_' + GCA.split('_')[1]
+            GCAid = 'GCA_' + GCAid.split('_')[1]
+        
+    for subelem in elem.findall('Organism'):
+        sp_name = subelem.text
+        sp_name = sp_name.split(' (')[0]
+        
+    if 'alternate' not in spID:
+        if GCAid not in GCA_list:
+            if args.group[0] == 'Insecta':
+                if spID[:1] == 'i':
+                    for k, v in insect_order_dict.items():
+                        if spID[:2] == v:
+                            order_name = k
+                    print(sp_name, order_name)
+                    genome_dict[spID] = GCA
+                    genome_info[order_name].append(sp_name)
+            else:
+                for order_name in args.group:
+                    orderID = insect_order_dict[order_name]
+                    if spID[:2] == orderID:
                         print(sp_name, order_name)
                         genome_dict[spID] = GCA
                         genome_info[order_name].append(sp_name)
-                else:
-                    for order_name in args.group:
-                        orderID = insect_order_dict[order_name]
-                        if spID[:2] == orderID:
-                            print(sp_name, order_name)
-                            genome_dict[spID] = GCA
-                            genome_info[order_name].append(sp_name)
 
-#Make sure there are new genomes available
+
 if len(genome_dict) == 0:
     print('No new genomes to download!')
     sys.exit()
@@ -88,7 +104,8 @@ else:
     print('\n')
     print('Downloading', len(genome_dict), 'genome(s)')
     print('This may take some time...')
-
+    print('\n')
+    
 #Function to download genomes using dictionary of species to assembly IDs as input                   
 def genome_download(species, genome):
     ID = genome.split('.')[0].split('_')[1]
@@ -96,13 +113,19 @@ def genome_download(species, genome):
     ID2 = ID[3:6]
     ID3 = ID[6:9]
     unix('sudo wget -q https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/' + ID1 + '/' + ID2 + '/' + ID3 + '/' + genome + '_' + species + '/' + genome + '_' + species + '_genomic.fna.gz', shell=True)
+    genome_file = genome + '_' + species + '_genomic.fna.gz'
+    if os.path.isfile(genome_file):
+        unix('sudo gzip -d ' + genome + '_' + species + '_genomic.fna.gz', shell=True)
+        unix('sudo mv ' + genome + '_' + species + '_genomic.fna ' + genome + '_' + species + '_genomic.fasta', shell=True)
+    else:
+        #sys.exit('\nOops, ' + species + 'genome not yet available from ncbi')
+        print('Oops, ' + species + 'genome not yet available from ncbi')
     
-    unix('sudo gzip -d ' + genome + '_' + species + '_genomic.fna.gz', shell=True)
-    unix('sudo mv ' + genome + '_' + species + '_genomic.fna ' + genome + '_' + species + '_genomic.fasta', shell=True)
-
-#Run function in parallel to download multiple genomes at once - currently set to download 10 at a time
-Parallel(n_jobs=10)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
-
+#Run function in parallel to download multiple genomes at once - use --threads to set how many, default is 1
+if args.threads:
+    Parallel(n_jobs=threads)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
+else:
+    Parallel(n_jobs=1)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
 
 #Output useful information on downloaded species if -i/--info flag is given
 if args.info:
@@ -138,7 +161,8 @@ if args.info:
 
     print('\n')
     print('Download complete. See genome_summary.tsv for useful information about genomes.')
-
+    
 else:
+    print('\n')
     print('Download complete.')
                         
