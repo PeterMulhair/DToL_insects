@@ -35,9 +35,6 @@ args = parse.parse_args()
 insect_order_dict = {'Archaeognatha': 'ia', 'Blattodea': 'ib', 'Coleoptera': 'ic', 'Dermaptera': 'ig', 'Diptera': 'id', 'Embioptera': 'ie', 'Ephemeroptera': 'ie', 'Hemiptera': 'ih', 'Hymenoptera': 'iy', 'Lepidoptera': 'il', 'Mantodea': 'im', 'Mecoptera': 'ij', 'Megaloptera': 'ik', 'Neuroptera': 'in', 'Odonata': 'io', 'Orthoptera': 'iq', 'Phasmatodea': 'ip', 'Phthiraptera': 'ip', 'Plecoptera': 'ip', 'Poduromorpha': 'ip', 'Psocoptera': 'ip', 'Raphidioptera': 'ir', 'Siphonaptera': 'is', 'Strepsiptera': 'is', 'Thysanoptera': 'it', 'Trichoptera': 'ii', 'Zygentoma': 'iz'}
 ##Collembola instead of Poduromorpha? 
 
-#Get number of threads
-threads = int(args.threads)
-
 #Check input options for errors
 for order_name in args.group:
     if order_name != 'Insecta':
@@ -123,6 +120,8 @@ def genome_download(species, genome):
     
 #Run function in parallel to download multiple genomes at once - use --threads to set how many, default is 1
 if args.threads:
+    #Get number of threads
+    threads = int(args.threads)
     Parallel(n_jobs=threads)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
 else:
     Parallel(n_jobs=1)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
