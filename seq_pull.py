@@ -18,8 +18,8 @@ with open(args.genome) as f, open(args.out, 'a+') as outF:
             seq = str(record.seq)
 
             if args.ranges:
-                query_seq = []
                 for seq_ranges in args.ranges[0]:
+                    query_seq = []
                     seq_start = seq_ranges.split(',')[0]
                     seq_end = seq_ranges.split(',')[1]
                     query_range = range(int(seq_start) - 1, int(seq_end))
@@ -29,10 +29,8 @@ with open(args.genome) as f, open(args.out, 'a+') as outF:
                             query_seq.append(nuc)
                         except:
                             sys.exit('Error: query range not in genome. Double check your input range')
-                query_seq = ''.join(query_seq)
-                query_start = args.ranges[0][0].split(',')[0]
-                query_end = args.ranges[0][1].split(',')[1]
-                outF.write('>' + ID + ' ' + query_start + '_' + query_end + '\n' + query_seq + '\n')
+                    query_seq = ''.join(query_seq)
+                    outF.write('>' + ID + ' ' + seq_start + '_' + seq_end + '\n' + query_seq + '\n')
                 
             else:
                 outF.write('>' + ID + '\n')
