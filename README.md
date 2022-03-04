@@ -20,17 +20,23 @@ If the `-i, --info` flag is used, a summary tsv file called `genome_summary.tsv`
 ### Full usage
 
 ```
-usage: get_genomes.py [-h] -e ENA -g GROUP [GROUP ...] [-i]
-
+usage: get_genomes.py [-h] -i INPUT -g GROUP [GROUP ...] [-a ANNOTATION] [-d]
+                      [-t THREADS]
 optional arguments:
   -h, --help            show this help message and exit
-  -e ENA, --ena ENA     ena tsv file with genome info
+  -i INPUT, --input INPUT
   -g GROUP [GROUP ...], --group GROUP [GROUP ...]
                         list of insect orders to download - eg. Insect,
 			Odonata, Ephemeroptera, Coleoptera, Hymenoptera,
-			Lepidoptera...
-  -i, --info            flag to output information on genome data - eg. genome
-      			size, chromosome count
+	 		Lepidoptera...
+  -a ANNOTATION, --annotation ANNOTATION
+                        flag to only download genomes that have annotation
+			data available, requires ensembl csv data
+  -d, --info            flag to output information on genome data - eg. genome
+                        size, chromosome count
+  -t THREADS, --threads THREADS
+                        number of threads to use i.e. number of genomes to
+			download at once, default is 1
 ```
 
 ## Download DToL genes
