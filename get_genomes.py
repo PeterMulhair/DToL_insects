@@ -26,6 +26,7 @@ parse = argparse.ArgumentParser()
 
 parse.add_argument("-i", "--input",type=str, help="ncbi xml file with genome info",required=True)
 parse.add_argument("-g", "--group", nargs="+", help="list of insect orders to download - eg. Insect, Odonata, Ephemeroptera, Coleoptera, Hymenoptera, Lepidoptera...",required=True)
+parse.add_argument("-a", "--annotation", help="flag to only download genomes that have annotation data available, requires ensembl csv data", required=False)
 parse.add_argument("-d", "--info", help="flag to output information on genome data - eg. genome size, chromosome count", action="store_true")
 parse.add_argument("-t", "--threads", help="number of threads to use i.e. number of genomes to download at once, default is 1", required=False)
 
@@ -46,9 +47,12 @@ for order_name in args.group:
             print('Insecta for full download')
             sys.exit()
 
+#Create new directory where genomes will be stored
+os.makedirs('genomes', exist_ok=True)
+            
 #Create list of genomes already downloaded to ignore
 GCA_list = []
-for genomes in glob.glob('*fasta'):
+for genomes in glob.glob('genomes/*fasta'):
     GCA = genomes.split('.')[0]
     GCA_list.append(GCA)
 
@@ -105,6 +109,7 @@ else:
     
 #Function to download genomes using dictionary of species to assembly IDs as input                   
 def genome_download(species, genome):
+    os.chdir('genomes')
     ID = genome.split('.')[0].split('_')[1]
     ID1 = ID[:3]
     ID2 = ID[3:6]
@@ -117,6 +122,25 @@ def genome_download(species, genome):
     else:
         #sys.exit('\nOops, ' + species + 'genome not yet available from ncbi')
         print('Oops, ' + species + 'genome not yet available from ncbi')
+    os.chdir('../')
+                
+#Download only genomes with annotation data available - requires -a flag and csv file
+if args.annotation:
+    annot_GCA_list = []
+    with open(args.annotation) as f:
+        next(f)
+        for line in f:
+            GCA = line.split('","')[4]
+            annot_GCA_list.append(GCA)
+    annot_genome_dict = {}
+    for sp, ID in genome_dict.items():
+        if ID in annot_GCA_list:
+            annot_genome_dict[sp] = ID
+    
+    if args.threads:
+        Parallel(n_jobs=threads)(delayed(genome_download)(k, v) for k, v in annot_genome_dict.items())
+    else:
+        Parallel(n_jobs=1)(delayed(genome_download)(k, v) for k, v in annot_genome_dict.items())
     
 #Run function in parallel to download multiple genomes at once - use --threads to set how many, default is 1
 if args.threads:
@@ -150,7 +174,7 @@ if args.info:
         genome_info_dict[order].append(info_list)
 
 
-    with open('genome_summary.tsv', 'a+') as outF:
+    with open('genomes/genome_summary.tsv', 'a+') as outF:
         for k, v in insect_order_dict.items():
             for orderID, info in genome_info_dict.items():
                 if v == orderID:
