@@ -39,3 +39,17 @@ optional arguments:
 `--genomes` flag requires an xml file from ncbi with all species genome information (see data folder for example).
 
 `--genes` flag requires a csv file from ensembl with all species genome information (see data folder for example).
+
+### Output
+The output is four directories containing peptides, cds, gff and gtf files for each species.
+
+### Full usage
+
+```
+usage: get_genes.py [-h] --genomes GENOMES --genes GENES
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --genomes GENOMES  ncbi xml file with genome info
+  --genes GENES      ensembl csv file with gene annotation info
+```
