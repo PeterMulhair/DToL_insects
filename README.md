@@ -6,11 +6,11 @@ Collection of scripts and data useful for analyses of insect genomes produced by
 `get_genomes.py` is a script to pull down DToL genomes for any desired insect order from ncbi using xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893)
 
 ### Requirements
-`-i, --input` flag requires a tsv file from ENA with all species genome information (see data folder for example).
+`-i, --input` flag requires an xml file from ncbi DToL page with all species genome information (see `data/` folder for example).
 
 `-g, --group` flag requires name of insect groups you wish to download data eg. `Insecta` or `Hemiptera, Hymenoptera, Diptera` or `Lepidoptera` (NOTE if Insecta is used, there is no need to specify individual insect orders).
 
-* If the `-a, --annotation` flag is used only genomes for species that have annotation data available will be downloaded - requires csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html) (see data folder for example)
+* If the `-a, --annotation` flag is used only genomes for species that have annotation data available will be downloaded - requires csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html) (see `data/` folder for example)
 
 ### Output
 The output is the genomes from the desired insect group in fasta format.
@@ -44,9 +44,9 @@ optional arguments:
 `get_genes.py` is a script to pull down DToL annotation data (proteins, cds, gff, gtf) for all available species. Requires xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893) and csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html)
 
 ### Requirements
-`--genomes` flag requires an xml file from ncbi with all species genome information (see data folder for example).
+`--genomes` flag requires an xml file from ncbi with all species genome information (see `data/` folder for example).
 
-`--genes` flag requires a csv file from ensembl with all species genome information (see data folder for example).
+`--genes` flag requires a csv file from ensembl with all species genome information (see `data/` folder for example).
 
 ### Output
 The output is four directories containing peptides, cds, gff and gtf files for each species.
