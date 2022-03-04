@@ -3,7 +3,7 @@ Collection of scripts and data useful for analyses of insect genomes produced by
 
 ## Download DToL genomes
 
-`get_genomes.py` is a script to pull down DToL genomes for any desired insect order from ncbi using tsv file from the [ena project page](https://www.ebi.ac.uk/ena/browser/text-search?query=darwin%20tree%20of%20life)
+`get_genomes.py` is a script to pull down DToL genomes for any desired insect order from ncbi using xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893)
 
 ### Requirements
 `-e, --ena` flag requires a tsv file from ENA with all species genome information (see data folder for example).
@@ -30,3 +30,12 @@ optional arguments:
   -i, --info            flag to output information on genome data - eg. genome
       			size, chromosome count
 ```
+
+## Download DToL genes
+
+`get_genes.py` is a script to pull down DToL annotation data (proteins, cds, gff, gtf) for all available species. Requires xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893) and csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html)
+
+### Requirements
+`--genomes` flag requires an xml file from ncbi with all species genome information (see data folder for example).
+
+`--genes` flag requires a csv file from ensembl with all species genome information (see data folder for example).
