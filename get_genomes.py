@@ -109,11 +109,11 @@ def genome_download(species, genome):
     ID1 = ID[:3]
     ID2 = ID[3:6]
     ID3 = ID[6:9]
-    unix('sudo wget -q https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/' + ID1 + '/' + ID2 + '/' + ID3 + '/' + genome + '_' + species + '/' + genome + '_' + species + '_genomic.fna.gz', shell=True)
+    unix('wget -q https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/' + ID1 + '/' + ID2 + '/' + ID3 + '/' + genome + '_' + species + '/' + genome + '_' + species + '_genomic.fna.gz', shell=True)
     genome_file = genome + '_' + species + '_genomic.fna.gz'
     if os.path.isfile(genome_file):
-        unix('sudo gzip -d ' + genome + '_' + species + '_genomic.fna.gz', shell=True)
-        unix('sudo mv ' + genome + '_' + species + '_genomic.fna ' + genome + '_' + species + '_genomic.fasta', shell=True)
+        unix('gzip -d ' + genome + '_' + species + '_genomic.fna.gz', shell=True)
+        unix('mv ' + genome + '_' + species + '_genomic.fna ' + genome + '_' + species + '_genomic.fasta', shell=True)
     else:
         #sys.exit('\nOops, ' + species + 'genome not yet available from ncbi')
         print('Oops, ' + species + 'genome not yet available from ncbi')
