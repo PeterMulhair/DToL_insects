@@ -38,7 +38,7 @@ GCA_list = []
 with open(args.genes) as f:
     next(f)
     for line in f:
-        GCA = line.split('","')[4]
+        GCA = line.split('","')[6]
         GCA_list.append(GCA)
         
 
