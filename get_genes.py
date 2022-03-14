@@ -38,13 +38,13 @@ GCA_list = []
 with open(args.genes) as f:
     next(f)
     for line in f:
-        GCA = line.split('","')[4]
+        GCA = line.split('","')[6]
         GCA_list.append(GCA)
         
 
 #Parse ncbi xml file to create dictionary of species name to GCA assembly ID
 genome_dict = {}
-with open(args.input) as f:
+with open(args.genomes) as f:
     xml = f.read()
     
 ncbi_file = ET.fromstring("<root>" + '\n' + xml + "</root>")
@@ -70,7 +70,6 @@ for elem in ncbi_file:
                 sp_name = sp_name.replace(' ', '_')
                 if sp_name == 'Nymphalis_io':
                     sp_name = 'Inachis_io'
-                print(spID[:2])
                 if sp_name not in sp_complete:
                     genome_dict[sp_name] = GCA
 
@@ -92,32 +91,31 @@ def genome_download(species, genome):
     os.chdir('proteins/')
     for num in num_list:
         try:
-            unix('sudo wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*pep*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*pep*', shell=True)
         except:
             continue
-    unix('sudo gzip -d *gz', shell=True)
+    unix('gzip -d *gz', shell=True)
     os.chdir('../cds/')
     for num in num_list:
         try:
-            unix('sudo wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*cds*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*cds*', shell=True)
         except:
             continue
-    unix('sudo gzip -d *gz', shell=True)
+    unix('gzip -d *gz', shell=True)
     os.chdir('../gff/')
     for num in num_list:
         try:
-            unix('sudo wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*gff*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*gff*', shell=True)
         except:
             continue
-    unix('sudo gzip -d *gz', shell=True)
-
-    os.chdir('gtf/')
+    unix('gzip -d *gz', shell=True)
+    os.chdir('../gtf/')
     for num in num_list:
         try:
-            unix('sudo wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*gtf*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*gtf*', shell=True)
         except:
             continue
-    unix('sudo gzip -d *gz', shell=True)
+    unix('gzip -d *gz', shell=True)
     os.chdir('../') 
 
 if len(genome_dict) > 0:

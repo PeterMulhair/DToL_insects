@@ -53,11 +53,14 @@ os.makedirs('genomes', exist_ok=True)
 #Create list of genomes already downloaded to ignore
 GCA_list = []
 for genomes in glob.glob('genomes/*fasta'):
-    GCA = genomes.split('.')[0]
+    GCA = genomes.split('/')[-1]
+    GCA = GCA.split('.')[0]
     GCA_list.append(GCA)
 
 #Parse ncbi xml file to create dictionary of species name to GCA assembly ID
 genome_dict = {}
+genome_order = {}
+spID_name = {}
 genome_info = defaultdict(list)
 with open(args.input) as f:
     xml = f.read()
@@ -93,11 +96,13 @@ for elem in ncbi_file:
                 for order_name in args.group:
                     orderID = insect_order_dict[order_name]
                     if spID[:2] == orderID:
-                        print(sp_name, order_name)
+                        #print(sp_name, order_name)
                         genome_dict[spID] = GCA
                         genome_info[order_name].append(sp_name)
-
-
+                        genome_order[sp_name] = order_name
+                        spID_name[spID] = sp_name
+                        
+'''
 if len(genome_dict) == 0:
     print('No new genomes to download!')
     sys.exit()
@@ -106,7 +111,7 @@ else:
     print('Downloading', len(genome_dict), 'genome(s)')
     print('This may take some time...')
     print('\n')
-    
+'''    
 #Function to download genomes using dictionary of species to assembly IDs as input                   
 def genome_download(species, genome):
     os.chdir('genomes')
@@ -136,19 +141,46 @@ if args.annotation:
     for sp, ID in genome_dict.items():
         if ID in annot_GCA_list:
             annot_genome_dict[sp] = ID
-    
+        
+    if len(annot_genome_dict) == 0:
+        print('No new genomes to download!')
+        sys.exit()
+    else:
+        for k in genome_dict.keys():
+            species_name = spID_name[k]
+            orders = genome_order[species_name]
+            print(species_name, orders)
+        print('\n')
+        print('Downloading', len(annot_genome_dict), 'genome(s)')
+        print('This may take some time...')
+        print('\n')
+        
     if args.threads:
         Parallel(n_jobs=threads)(delayed(genome_download)(k, v) for k, v in annot_genome_dict.items())
     else:
         Parallel(n_jobs=1)(delayed(genome_download)(k, v) for k, v in annot_genome_dict.items())
-    
-#Run function in parallel to download multiple genomes at once - use --threads to set how many, default is 1
-if args.threads:
-    #Get number of threads
-    threads = int(args.threads)
-    Parallel(n_jobs=threads)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
-else:
-    Parallel(n_jobs=1)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
+
+else:#Download all genomes available  
+    #Run function in parallel to download multiple genomes at once - use --threads to set how many, default is 1
+    if len(genome_dict) == 0:
+        print('No new genomes to download!')
+        sys.exit()
+    else:
+        for k in genome_dict.keys():
+            species_name = spID_name[k]
+            orders = genome_order[species_name]
+            print(species_name, orders)
+        print('\n')
+        print('Downloading', len(genome_dict), 'genome(s)')
+        print('This may take some time...')
+        print('\n')
+
+    if args.threads:
+        #Get number of threads
+        threads = int(args.threads)
+        Parallel(n_jobs=threads)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
+    else:
+        Parallel(n_jobs=1)(delayed(genome_download)(k, v) for k, v in genome_dict.items())
 
 #Output useful information on downloaded species if -i/--info flag is given
 if args.info:
