@@ -29,9 +29,10 @@ args = parse.parse_args()
 
 #Check for species with data already downloaded
 sp_complete = []
-for sp in glob.glob('proteins/*fa'):
-    sp_name = sp.split('/')[-1].split('-')[0]
-    sp_complete.append(sp_name)
+if os.path.isdir('proteins'):
+    for sp in glob.glob('proteins/*fa'):
+        sp_name = sp.split('/')[-1].split('-')[0]
+        sp_complete.append(sp_name)
 
 #Parse ensembl csv file to get species names with annotation data
 GCA_list = []
