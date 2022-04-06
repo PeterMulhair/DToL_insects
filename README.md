@@ -41,7 +41,7 @@ optional arguments:
 
 ## Download DToL gene annotation data
 
-`get_genes.py` is a script to pull down DToL annotation data (proteins, cds, gff, gtf) for all available species. Requires xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893) and csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html)
+`get_genes.py` is a script to pull down DToL annotation data (proteins, cds, gff, gtf) for all available species. Requires xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893) and csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html) (which is obtained using the `Download whole table` tab in the top right corner of the page.
 
 ### Requirements
 `--genomes` flag requires an xml file from ncbi with all species genome information (see `data/` folder for example).
