@@ -3,7 +3,7 @@ Collection of scripts and data useful for analyses of insect genomes produced by
 
 ## Download DToL genomes
 
-`get_genomes.py` is a script to pull down DToL genomes for any desired insect order from ncbi using xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893)
+`get_genomes.py` is a script to pull down DToL genomes for any desired insect order from ncbi using xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/assembly?LinkName=bioproject_assembly_all&from_uid=667893) using the `Send to: File` drop down in the top right of the page.
 
 ### Requirements
 `-i, --input` flag requires an xml file from ncbi DToL page with all species genome information (see `data/` folder for example).
@@ -41,7 +41,7 @@ optional arguments:
 
 ## Download DToL gene annotation data
 
-`get_genes.py` is a script to pull down DToL annotation data (proteins, cds, gff, gtf) for all available species. Requires xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893) and csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html)
+`get_genes.py` is a script to pull down DToL annotation data (proteins, cds, gff, gtf) for all available species. Requires xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893) and csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html) (which is obtained using the `Download whole table` tab in the top right corner of the page.
 
 ### Requirements
 `--genomes` flag requires an xml file from ncbi with all species genome information (see `data/` folder for example).
