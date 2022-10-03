@@ -3,7 +3,7 @@ Collection of scripts and data useful for analyses of insect genomes produced by
 
 ## Download DToL genomes
 
-`get_genomes.py` is a script to pull down DToL genomes for any desired insect order from ncbi using xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/assembly?LinkName=bioproject_assembly_all&from_uid=667893) using the `Send to: File` drop down in the top right of the page.
+`get_genomes.py` is a script to pull down DToL genomes for any desired insect order from ncbi using xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/assembly?LinkName=bioproject_assembly_all&from_uid=667893) using the `Send to: File` drop down in the top right of the page and selecting XML from the format list.
 
 ### Requirements
 `-i, --input` flag requires an xml file from ncbi DToL page with all species genome information (see `data/` folder for example).
