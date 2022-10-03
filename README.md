@@ -8,7 +8,7 @@ Collection of scripts and data useful for analyses of insect genomes produced by
 ### Requirements
 `-i, --input` flag requires an xml file from ncbi DToL page with all species genome information (see `data/` folder for example).
 
-`-g, --group` flag requires name of insect groups you wish to download data eg. `Insecta` or `Hemiptera, Hymenoptera, Diptera` or `Lepidoptera` (NOTE if Insecta is used, there is no need to specify individual insect orders).
+`-g, --group` flag requires name of insect groups you wish to download data eg. `Insecta` or `Hemiptera, Hymenoptera, Diptera` or `Lepidoptera` (NOTE if Insecta is used, there is no need to specify individual insect orders). This can also be a name of a file with a list of species of interest (see `data/sp_list.txt` as an example). 
 
 * If the `-a, --annotation` flag is used only genomes for species that have annotation data available will be downloaded - requires csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html) (see `data/` folder for example)
 
