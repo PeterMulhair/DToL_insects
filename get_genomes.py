@@ -32,22 +32,30 @@ parse.add_argument("-t", "--threads", help="number of threads to use i.e. number
 
 args = parse.parse_args()
 
-threads = int(args.threads)
+if args.threads:
+    threads = int(args.threads)
 
 #Dictionary of insect orders and DToL abbreviations for them
 insect_order_dict = {'Archaeognatha': 'ia', 'Blattodea': 'ib', 'Coleoptera': 'ic', 'Dermaptera': 'ig', 'Diptera': 'id', 'Embioptera': 'ie', 'Ephemeroptera': 'ie', 'Hemiptera': 'ih', 'Hymenoptera': 'iy', 'Lepidoptera': 'il', 'Mantodea': 'im', 'Mecoptera': 'ij', 'Megaloptera': 'ik', 'Neuroptera': 'in', 'Odonata': 'io', 'Orthoptera': 'iq', 'Phasmatodea': 'ip', 'Phthiraptera': 'ip', 'Plecoptera': 'ip', 'Poduromorpha': 'ip', 'Psocoptera': 'ip', 'Raphidioptera': 'ir', 'Siphonaptera': 'is', 'Strepsiptera': 'is', 'Thysanoptera': 'it', 'Trichoptera': 'ii', 'Zygentoma': 'iz'}
 ##Collembola instead of Poduromorpha? 
 
 #Check input options for errors
-for order_name in args.group:
-    if order_name != 'Insecta':
-        if order_name not in insect_order_dict:
-            print('ERROR: Please check input Order name...')
-            print('\n')
-            print('Order name should be one of the following:')
-            print(list(insect_order_dict.keys()))
-            print('Insecta for full download')
-            sys.exit()
+if os.path.exists(args.group[0]):    
+    species_name_list = []
+    with open(args.group[0]) as f:
+        for line in f:
+            sp = line.strip()
+            species_name_list.append(sp)            
+else:
+    for order_name in args.group:
+        if order_name != 'Insecta':
+            if order_name not in insect_order_dict:
+                print('ERROR: Please check input Order name...')
+                print('\n')
+                print('Order name should be one of the following:')
+                print(list(insect_order_dict.keys()))
+                print('Insecta for full download')
+                sys.exit()
 
 #Create new directory where genomes will be stored
 os.makedirs('genomes', exist_ok=True)
@@ -83,25 +91,31 @@ for elem in ncbi_file:
     for subelem in elem.findall('Organism'):
         sp_name = subelem.text
         sp_name = sp_name.split(' (')[0]
+        species_name = sp_name.replace(' ', '_')
         
     if 'alternate' not in spID:
         if GCAid not in GCA_list:
-            if args.group[0] == 'Insecta':
-                if spID[:1] == 'i':
-                    for k, v in insect_order_dict.items():
-                        if spID[:2] == v:
-                            order_name = k
-                    print(sp_name, order_name)
+            if os.path.exists(args.group[0]):
+                if species_name in species_name_list:
                     genome_dict[spID] = GCA
-                    genome_info[order_name].append(sp_name)
+                    
             else:
-                for order_name in args.group:
-                    orderID = insect_order_dict[order_name]
-                    if spID[:2] == orderID:
+                if args.group[0] == 'Insecta':
+                    if spID[:1] == 'i':
+                        for k, v in insect_order_dict.items():
+                            if spID[:2] == v:
+                                order_name = k
+                        print(sp_name, order_name)
                         genome_dict[spID] = GCA
                         genome_info[order_name].append(sp_name)
-                        genome_order[sp_name] = order_name
-                        spID_name[spID] = sp_name
+                else:                
+                    for order_name in args.group:
+                        orderID = insect_order_dict[order_name]
+                        if spID[:2] == orderID:
+                            genome_dict[spID] = GCA
+                            genome_info[order_name].append(sp_name)
+                            genome_order[sp_name] = order_name
+                            spID_name[spID] = sp_name
                         
 #Function to download genomes using dictionary of species to assembly IDs as input                   
 def genome_download(species, genome):
@@ -156,10 +170,10 @@ else:#Download all genomes available
         print('No new genomes to download!')
         sys.exit()
     else:
-        for k in genome_dict.keys():
-            species_name = spID_name[k]
-            orders = genome_order[species_name]
-            print(species_name, orders)
+        #for k in genome_dict.keys():
+            #species_name = spID_name[k]
+            #orders = genome_order[species_name]
+            #print(species_name, orders)
         print('\n')
         print('Downloading', len(genome_dict), 'genome(s)')
         print('This may take some time...')
