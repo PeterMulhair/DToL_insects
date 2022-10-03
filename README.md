@@ -28,7 +28,8 @@ optional arguments:
   -g GROUP [GROUP ...], --group GROUP [GROUP ...]
                         list of insect orders to download - eg. Insect,
 			Odonata, Ephemeroptera, Coleoptera, Hymenoptera,
-	 		Lepidoptera...
+	 		Lepidoptera... Or name of text file with species
+			names eg. see data/sp_list.txt
   -a ANNOTATION, --annotation ANNOTATION
                         flag to only download genomes that have annotation
 			data available, requires ensembl csv data
