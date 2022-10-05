@@ -29,8 +29,8 @@ args = parse.parse_args()
 
 #Check for species with data already downloaded
 sp_complete = []
-if os.path.isdir('proteins'):
-    for sp in glob.glob('proteins/*fa'):
+if os.path.isdir('cds'):
+    for sp in glob.glob('cds/*gz'):
         sp_name = sp.split('/')[-1].split('-')[0]
         sp_complete.append(sp_name)
 
@@ -79,7 +79,7 @@ if len(genome_dict) > 0:
 else:
     print('No new data to download')
         
-num_list = ['04', '05', '06', '07', '08', '09', '10', '11', '12']
+num_list = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
 
 def genome_download(species, genome):
     os.makedirs('proteins', exist_ok=True)
@@ -92,31 +92,40 @@ def genome_download(species, genome):
     os.chdir('proteins/')
     for num in num_list:
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*pep*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2022_' + num + '/*pep*', shell=True)
         except:
             continue
-    unix('gzip -d *gz', shell=True)
-    os.chdir('../cds/')
+    
+    #unix('gzip -d *gz', shell=True)
+
+    os.chdir('cds/')
     for num in num_list:
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*cds*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2022_' + num + '/*cds*', shell=True)
         except:
             continue
-    unix('gzip -d *gz', shell=True)
-    os.chdir('../gff/')
+    #unix('gzip -d *gz', shell=True)
+
+    os.chdir('gff/')
     for num in num_list:
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*gff*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2022_' + num + '/*gff*', shell=True)
         except:
             continue
-    unix('gzip -d *gz', shell=True)
+
+    #unix('gzip -d *gz', shell=True)
     os.chdir('../gtf/')
     for num in num_list:
         try:
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*gtf*', shell=True)
         except:
-            continue
-    unix('gzip -d *gz', shell=True)
+            try:
+                unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2022_' + num + '/*gtf*', shell=True)
+            except:
+                continue
+        continue
+    #unix('gzip -d *gz', shell=True)
+
     os.chdir('../') 
 
 if len(genome_dict) > 0:
