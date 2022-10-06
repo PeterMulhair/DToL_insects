@@ -22,14 +22,16 @@ If the `-i, --info` flag is used, a summary tsv file called `genome_summary.tsv`
 ```
 usage: get_genomes.py [-h] -i INPUT -g GROUP [GROUP ...] [-a ANNOTATION] [-d]
                       [-t THREADS]
-optional arguments:
-  -h, --help            show this help message and exit
+required arguments:
   -i INPUT, --input INPUT
   -g GROUP [GROUP ...], --group GROUP [GROUP ...]
                         list of insect orders to download - eg. Insect,
 			Odonata, Ephemeroptera, Coleoptera, Hymenoptera,
 	 		Lepidoptera... Or name of text file with species
 			names eg. see data/sp_list.txt
+
+optional arguments:
+  -h, --help            show this help message and exit
   -a ANNOTATION, --annotation ANNOTATION
                         flag to only download genomes that have annotation
 			data available, requires ensembl csv data
@@ -49,16 +51,22 @@ optional arguments:
 
 `--genes` flag requires a csv file from ensembl with all species genome information (see `data/` folder for example).
 
+Optional: `--group` is a text file of species names you wish to download data for (see `data/sp_list.txt` folder for example).
+
 ### Output
 The output is four directories containing peptides, cds, gff and gtf files for each species.
 
 ### Full usage
 
 ```
-usage: get_genes.py [-h] --genomes GENOMES --genes GENES
+usage: get_genes.py [-h] --genomes GENOMES --genes GENES [--group sp_list.txt]
+
+required arguments:
+  --genomes GENOMES  ncbi xml file with genome info
+  --genes GENES      ensembl csv file with gene annotation info
 
 optional arguments:
   -h, --help         show this help message and exit
-  --genomes GENOMES  ncbi xml file with genome info
-  --genes GENES      ensembl csv file with gene annotation info
+  --group            Or name of text file with species names
+                     to download eg. see data/sp_list.txt
 ```
