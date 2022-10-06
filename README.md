@@ -44,14 +44,14 @@ optional arguments:
 
 ## Download DToL gene annotation data
 
-`get_genes.py` is a script to pull down DToL annotation data (proteins, cds, gff, gtf) for all available species. Requires xml file from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893) and csv file from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html) (which is obtained using the `Download whole table` tab in the top right corner of the page.
+`get_genes.py` is a script to pull down DToL annotation data (proteins, cds, gff, gtf) for all available species. Requires xml file (`assembly_result.xml`) from the [ncbi project page](https://www.ncbi.nlm.nih.gov/bioproject/667893) and csv file (`Species.csv`) from [ensembl rapid release site](https://rapid.ensembl.org/info/about/species.html) (which is obtained using the `Download whole table` tab in the top right corner of the page).
 
 ### Requirements
 `--genomes` flag requires an xml file from ncbi with all species genome information (see `data/` folder for example).
 
 `--genes` flag requires a csv file from ensembl with all species genome information (see `data/` folder for example).
 
-Optional: `--group` is a text file of species names you wish to download data for (see `data/sp_list.txt` folder for example).
+Optional: `--group` flag takes a text file of species names you wish to download data for (see `data/sp_list.txt` folder for example).
 
 ### Output
 The output is four directories containing peptides, cds, gff and gtf files for each species.
@@ -67,6 +67,6 @@ required arguments:
 
 optional arguments:
   -h, --help         show this help message and exit
-  --group            Or name of text file with species names
+  --group            Name of text file with species names
                      to download eg. see data/sp_list.txt
 ```
