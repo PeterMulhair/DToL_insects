@@ -44,7 +44,6 @@ for fasta in glob.glob(args.path + '*'):
 print('Calculating GC content for', len(genome_list), 'genomes...\n')
             
 outF = open(args.outfile, 'w')
-sp_chrmGC = defaultdict(list)
 for fasta in glob.glob(args.path + '*'):
     if fasta.endswith(('.fa', '.fasta', '.fas', '.fna')):
         genome = fasta.split('/')[-1]
