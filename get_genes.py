@@ -109,11 +109,19 @@ def genome_download(species, genome):
     os.chdir('proteins/')
     for num in num_list:
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2022_' + num + '/*pep*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2022_' + num + '/*pep*', shell=True)
         except:
             continue
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*pep*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2022_' + num + '/*pep*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2021_' + num + '/*pep*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2021_' + num + '/*pep*', shell=True)
         except:
             continue
     #unix('gzip -d *gz', shell=True)
@@ -121,39 +129,62 @@ def genome_download(species, genome):
     os.chdir('../cds/')
     for num in num_list:
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2022_' + num + '/*cds*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2022_' + num + '/*cds*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2022_' + num + '/*cds*', shell=True)
         except:
             continue
 
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*cds*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2021_' + num + '/*cds*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2021_' + num + '/*cds*', shell=True)
         except:
             continue
 
-    unix('gzip -d *gz', shell=True)
+    #unix('gzip -d *gz', shell=True)
     
     os.chdir('../gff/')
     for num in num_list:
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2022_' + num + '/*gff*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2022_' + num + '/*gff*', shell=True)
         except:
             continue
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*gff*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2022_' + num + '/*gff*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2021_' + num + '/*gff*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2021_' + num + '/*gff*', shell=True)
         except:
             continue
     #unix('gzip -d *gz', shell=True)
     os.chdir('../gtf/')
     for num in num_list:
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2021_' + num + '/*gtf*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2021_' + num + '/*gtf*', shell=True)
         except:
             continue
         try:
-            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/geneset/2022_' + num + '/*gtf*', shell=True)
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2021_' + num + '/*gtf*', shell=True)
         except:
             continue
-
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2022_' + num + '/*gtf*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2022_' + num + '/*gtf*', shell=True)
+        except:
+            continue
     #unix('gzip -d *gz', shell=True)
 
     os.chdir('../') 
