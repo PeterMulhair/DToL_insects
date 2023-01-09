@@ -39,7 +39,7 @@ if args.group:
 #Check for species with data already downloaded
 sp_complete = []
 if os.path.isdir('cds'):
-    for sp in glob.glob('cds/*fa'):
+    for sp in glob.glob('cds/*gz'):
         sp_name = sp.split('/')[-1].split('-')[0]
         sp_complete.append(sp_name)
 
