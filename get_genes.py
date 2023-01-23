@@ -117,11 +117,19 @@ def genome_download(species, genome):
         except:
             continue
         try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/braker/geneset/2022_' + num + '/*pep*', shell=True)
+        except:
+            continue
+        try:
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2021_' + num + '/*pep*', shell=True)
         except:
             continue
         try:
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2021_' + num + '/*pep*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/braker/geneset/2021_' + num + '/*pep*', shell=True)
         except:
             continue
     #unix('gzip -d *gz', shell=True)
@@ -136,7 +144,11 @@ def genome_download(species, genome):
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2022_' + num + '/*cds*', shell=True)
         except:
             continue
-
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/braker/geneset/2022_' + num + '/*cds*', shell=True)
+        except:
+            continue
+        
         try:
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2021_' + num + '/*cds*', shell=True)
         except:
@@ -145,7 +157,10 @@ def genome_download(species, genome):
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2021_' + num + '/*cds*', shell=True)
         except:
             continue
-
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/braker/geneset/2021_' + num + '/*cds*', shell=True)
+        except:
+            continue
     #unix('gzip -d *gz', shell=True)
     
     os.chdir('../gff/')
@@ -159,11 +174,19 @@ def genome_download(species, genome):
         except:
             continue
         try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/braker/geneset/2022_' + num + '/*gff*', shell=True)
+        except:
+            continue
+        try:
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2021_' + num + '/*gff*', shell=True)
         except:
             continue
         try:
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2021_' + num + '/*gff*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/braker/geneset/2021_' + num + '/*gff*', shell=True)
         except:
             continue
     #unix('gzip -d *gz', shell=True)
@@ -178,11 +201,19 @@ def genome_download(species, genome):
         except:
             continue
         try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/braker/geneset/2021_' + num + '/*gtf*', shell=True)
+        except:
+            continue
+        try:
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/ensembl/geneset/2022_' + num + '/*gtf*', shell=True)
         except:
             continue
         try:
             unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/refseq/geneset/2022_' + num + '/*gtf*', shell=True)
+        except:
+            continue
+        try:
+            unix('wget -q ftp://ftp.ensembl.org/pub/rapid-release/species/' + species + '/' + genome + '/braker/geneset/2022_' + num + '/*gtf*', shell=True)
         except:
             continue
     #unix('gzip -d *gz', shell=True)
