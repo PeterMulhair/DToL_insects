@@ -156,7 +156,8 @@ if args.annotation:
             print(species_name, orders)
         print('\n')
         print('Downloading', len(annot_genome_dict), 'genome(s)')
-        print('This may take some time...')
+        if len(annot_genome_dict) > 10:
+            print('This may take some time...')
         print('\n')
         
     if args.threads:
@@ -176,7 +177,8 @@ else:#Download all genomes available
             #print(species_name, orders)
         print('\n')
         print('Downloading', len(genome_dict), 'genome(s)')
-        print('This may take some time...')
+        if len(annot_genome_dict) > 10:
+            print('This may take some time...')
         print('\n')
 
     if args.threads:
