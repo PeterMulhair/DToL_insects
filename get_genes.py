@@ -45,13 +45,16 @@ if os.path.isdir('cds'):
 
 #Parse ensembl csv file to get species names with annotation data
 GCA_list = []
+GCA_using_dict = {}
 with open(args.genes) as f:
     next(f)
     for line in f:
         GCA = line.split('","')[6]
         species = line.split('","')[0].strip('"')
         if species in species_name_list:
+            GCA = GCA.split('.')[0]
             GCA_list.append(GCA)
+            GCA_using_dict[GCA] = line.split('","')[6]
 
             
 #Parse ncbi xml file to create dictionary of species name to GCA assembly ID
@@ -78,10 +81,11 @@ for elem in ncbi_file:
         
     if 'alternate' not in spID:
         if args.group:
-            if GCA in GCA_list:
+            if GCAid in GCA_list:
                 sp_name = sp_name.replace(' ', '_')
+                GCA_using = GCA_using_dict[GCAid]
                 if sp_name not in sp_complete:
-                    genome_dict[sp_name] = GCA
+                    genome_dict[sp_name] = GCA_using
         else:
             if spID[:1] == 'i':
                 if GCA in GCA_list:
